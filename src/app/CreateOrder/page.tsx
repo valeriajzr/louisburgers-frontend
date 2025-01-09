@@ -1,12 +1,9 @@
 'use client';
-import { useParams } from "next/navigation";
-import { useRouter } from "next/navigation"; 
+import { useSearchParams } from "next/navigation";
 
 const CreateOrder = () => {
-    const router = useRouter();
-    //const params = useParams <{idBurger: string}>()
-    const {idBurger} = router.query;
-    //console.log(params)
+    const searchParams = useSearchParams();
+    const idBurger = searchParams.get("id");
 
     return(
         <div className="p-8">
