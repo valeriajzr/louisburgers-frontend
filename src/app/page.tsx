@@ -1,6 +1,7 @@
 'use client';
 import {useEffect, useState} from "react";
 import { useRouter } from "next/navigation"; 
+import { useBurger } from './context/BurgerContext';
 import "./globals.css";
 
 export default function Home(){
@@ -8,8 +9,10 @@ export default function Home(){
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const router = useRouter();
-  const handleOrderClick = (idBurger) => {
-    router.push(`/CreateOrder?id=${idBurger}`);
+  const { selectBurger } = useBurger(); //Hook to use the context
+  const handleOrderClick = (burger) => {
+    selectBurger(burger);
+    router.push('/CreateOrder');
   };
 
   useEffect(() => {
@@ -23,7 +26,6 @@ export default function Home(){
           throw new Error ("Error getting the burgers");
         }
         const data = await response.json();
-        console.log(data);
         setBurgers(data);
         setLoading(false);
       } catch (err){
@@ -60,7 +62,7 @@ export default function Home(){
 
               {/*button to re direct*/}
               <button 
-                onClick= {() => handleOrderClick(burger.idBurger)}
+                onClick= {() => handleOrderClick(burger)}
                 className="mt-4 px-4 py-2 bg-blue-500 text-white font-semibold rounded-full hover:bg-blue-600"
                 
               >

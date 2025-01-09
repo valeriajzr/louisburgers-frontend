@@ -1,10 +1,10 @@
 'use client';
 import {useEffect, useState} from "react";
 import { useSearchParams } from "next/navigation";
+import { useBurger } from '../context/BurgerContext';
 
 const CreateOrder = () => {
-    const searchParams = useSearchParams();
-    const idBurger = searchParams.get("id");
+    const { selectedBurger } = useBurger();
     const [extras, setExtras] = useState([]);
     const [loading, setLoading] = useState([true]);
     const [error, setError] = useState(null);
@@ -39,19 +39,25 @@ const CreateOrder = () => {
 
     return(
         <div className="p-8 bg-red-50 min-h-screen">
-            <h1 className = "text-4x1 font-bold mb-4">Create your order </h1>
-            {idBurger ? (
-                <p className="text-lg">You selected burger with ID: { idBurger }</p>
+            <h1 className = "text-4xl font-bold text-center mb-8">Create your order </h1>
+            {selectedBurger ? (
+                <div>
+                    <p className="text-lg">Burger name: { selectedBurger.burgerName }</p>
+                    <p className="text-lg">Price: €{selectedBurger.price}</p>
+                    <p className="text-lg">Meat: {selectedBurger.meat}</p>
+                    <p className="text-lg">Vegetables: {selectedBurger.vegetables}</p>
+                    <p className="text-lg">Extras: {selectedBurger.extras}</p>
+                </div>
+                
                 ) : (
                 <p className="text-lg">Loading...</p>
                 )
             }
-            <h2 className="text-4xl font-bold text-center mb-8">Available extras: </h2>
+            <br></br>
+            <h2 className="text-4x1 font-bold mb-4 ">Add more extras: </h2>
                 {extras.map((extra) => (
                     <div
                     key={extra.idExtra}>
-                    
-
                     <h3 className="text-xl font-semibold mb-4">{extra.name}</h3>
                     <p className="text-green-600 text-lg">€{extra.price.toFixed(2)}</p>
                     </div>
