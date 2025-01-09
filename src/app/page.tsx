@@ -1,11 +1,17 @@
-"use client";
+'use client';
 import {useEffect, useState} from "react";
 import API_BASE_URL from "./config";
+import { useRouter } from "next/navigation"; 
+import "./globals.css";
 
-export default function Home(){
+export default function Home({ Component, pageProps}){
   const [burgers, setBurgers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const router = useRouter();
+  const handleOrderClick = (idBurger) => {
+    router.push(`/CreateOrder?id=${idBurger}`);
+  };
 
   useEffect(() => {
     const fetchBurgers = async () => {
@@ -35,9 +41,10 @@ export default function Home(){
     return <p>Error: {error}</p>
   }
 
+
     return (
-      <div className ="p-8">
-          <h1 className="text-4xl font-bold text-center mb-8">Menu</h1>
+      <div className ="p-8 bg-red-50 min-h-screen">
+          <h1 className="text-4xl font-bold text-center mb-8">Louis Burgers</h1>
           <div className ="grid grid-cols-1 md:grid-cols-2 lg:grid-cols3 gap-6">
             {burgers.map((burger)=> (
               <div
@@ -51,7 +58,15 @@ export default function Home(){
               {burger.extras && burger.extras.length > 0 &&
                <p className="text-green-600 text-lg">Extras:  {burger.extras}</p>
               }
-             
+
+              {/*button to re direct*/}
+              <button 
+                onClick= {() => handleOrderClick(burger.idBurger)}
+                className="mt-4 px-4 py-2 bg-blue-500 text-white font-semibold rounded-full hover:bg-blue-600"
+                
+              >
+                Order now
+              </button>
               </div>
             ))}
           </div>
