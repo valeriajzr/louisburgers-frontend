@@ -1,10 +1,9 @@
 'use client';
 import {useEffect, useState} from "react";
-import API_BASE_URL from "./config";
 import { useRouter } from "next/navigation"; 
 import "./globals.css";
 
-export default function Home({ Component, pageProps}){
+export default function Home(){
   const [burgers, setBurgers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -21,7 +20,7 @@ export default function Home({ Component, pageProps}){
             cache: 'default'
           });
         if (!response.ok){
-          throw new Error ("Error al obtener las hamburguesas");
+          throw new Error ("Error getting the burgers");
         }
         const data = await response.json();
         console.log(data);
