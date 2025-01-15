@@ -8,6 +8,11 @@ const CreateOrder = () => {
     const [extras, setExtras] = useState([]);
     const [loading, setLoading] = useState([true]);
     const [error, setError] = useState(null);
+    const [ selectedExtra, setSelectedExtra ] = useState(null); 
+
+    const handleExtraChange = (extra) =>{
+        setSelectedExtra(extra); 
+    };
 
     useEffect(() => {
         const fetchExtras = async () => {
