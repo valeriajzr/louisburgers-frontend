@@ -9,7 +9,7 @@ export default function Home(){
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const router = useRouter();
-  const { selectBurger } = useBurger(); //Hook to use the context
+  const { selectedBurger, selectBurger, removeFromCart, clearCart } = useBurger(); //Hook to use the context
   const handleOrderClick = (burger) => {
     selectBurger(burger);
     router.push('/CreateOrder');
@@ -42,7 +42,6 @@ export default function Home(){
     return <p>Error: {error}</p>
   }
 
-
     return (
       <div className ="p-8 bg-red-50 min-h-screen">
           <h1 className="text-4xl font-bold text-center mb-8">Louis Burgers</h1>
@@ -68,6 +67,7 @@ export default function Home(){
               >
                 Order now
               </button>
+
               </div>
             ))}
           </div>

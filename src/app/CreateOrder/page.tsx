@@ -4,7 +4,7 @@ import { useSearchParams } from "next/navigation";
 import { useBurger } from '../context/BurgerContext';
 
 const CreateOrder = () => {
-    const { selectedBurger } = useBurger();
+    const { selectedBurger, selectBurger, removeFromCart, clearCart, addExtraToBurger, removeExtraFromBurger } = useBurger();
     const [extras, setExtras] = useState([]);
     const [loading, setLoading] = useState([true]);
     const [error, setError] = useState(null);
@@ -65,11 +65,19 @@ const CreateOrder = () => {
                     key={extra.idExtra}>
                     <h3 className="text-xl font-semibold mb-4">{extra.name}</h3>
                     <p className="text-green-600 text-lg">€{extra.price.toFixed(2)}</p>
+                     {/*button to add an extra*/}
+                    <button
+                        onClick = {() => addExtraToBurger (selectedBurger.idBurger, extra)}
+                        className="mt-4 px-4 py-2 bg-blue-500 text-white font-semibold rounded-full hover:bg-blue-600"
+                    > 
+                        Add extra
+                    </button>
                     </div>
                     )
 
                  )
                 }
+               
 
         </div>
     );
