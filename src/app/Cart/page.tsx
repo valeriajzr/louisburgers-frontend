@@ -11,12 +11,12 @@ const CartPage = () => {
 
     const confirmOrder = async () => {
         try {
-            // Transformamos burgersList a la estructura esperada por el backend
+            // transfor burgerlist to the structure expected by the backend 
             const formattedOrder = {
                 totalPrice: burgersList.reduce((acc, burger) => acc + burger.price, 0), // Calculamos el precio total
                 burger: burgersList.map(burger => ({
                     idBurger: burger.idBurger,
-                    idExtra: burger.extra // Asegúrate de que `extra` es `idExtra`
+                    idExtra: burger.extra 
                 }))
             };
     
@@ -38,7 +38,7 @@ const CartPage = () => {
                 type: "success"
             });
 
-            await new Promise(resolve => setTimeout(resolve, 15000)); //wait 15 seconds seing the notification 
+            await new Promise(resolve => setTimeout(resolve, 10000)); //wait 10 seconds seing the notification 
             //hide notification, clear the cart and redirect to home page
             setNotification(null); 
             clearCart();
