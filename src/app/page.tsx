@@ -3,15 +3,18 @@ import {useEffect, useState} from "react";
 import { useRouter } from "next/navigation"; 
 import { useBurger } from './context/BurgerContext';
 import "./globals.css";
+import CartButton from './components/CartButton';
 
 export default function Home(){
   const [burgers, setBurgers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const router = useRouter();
-  const { selectBurger } = useBurger(); //Hook to use the context
+  const { selectBurger, currentBurger } = useBurger(); //Hook to use the context
   const handleOrderClick = (burger) => {
+    currentBurger(burger);
     selectBurger(burger);
+
     router.push('/CreateOrder');
   };
 
@@ -42,10 +45,10 @@ export default function Home(){
     return <p>Error: {error}</p>
   }
 
-
     return (
       <div className ="p-8 bg-red-50 min-h-screen">
           <h1 className="text-4xl font-bold text-center mb-8">Louis Burgers</h1>
+          <CartButton />
           <div className ="grid grid-cols-1 md:grid-cols-2 lg:grid-cols3 gap-6">
             {burgers.map((burger)=> (
               <div
@@ -66,8 +69,9 @@ export default function Home(){
                 className="mt-4 px-4 py-2 bg-blue-500 text-white font-semibold rounded-full hover:bg-blue-600"
                 
               >
-                Order now
+                Customize
               </button>
+
               </div>
             ))}
           </div>
