@@ -7,7 +7,53 @@ const CartPage = () => {
     const { burgersList, extrasList, removeFromCart, clearCart, removeExtraFromBurger } = useBurger();
     const router = useRouter();
     const [foundExtras, setFoundExtras] = useState({});
+    const [notification, setNotification] = useState(null);
 
+    const confirmOrder = async () => {
+        try {
+            // Transformamos burgersList a la estructura esperada por el backend
+            const formattedOrder = {
+                totalPrice: burgersList.reduce((acc, burger) => acc + burger.price, 0), // Calculamos el precio total
+                burger: burgersList.map(burger => ({
+                    idBurger: burger.idBurger,
+                    idExtra: burger.extra // Asegúrate de que `extra` es `idExtra`
+                }))
+            };
+    
+            const response = await fetch('https://localhost:7271/createOrderRequest', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formattedOrder),
+            });
+    
+            if (!response.ok) {
+                throw new Error("Error sending the order");
+            }
+    
+            const data = await response.json();
+            setNotification({
+                message: `Order Created successfully!\nID ${data.idOrder}.\nTotal to pay: $${data.totalPrice}.\nRemember you pay when you receive your order\nThanks for choosing us`,
+                type: "success"
+            });
+
+            await new Promise(resolve => setTimeout(resolve, 15000)); //wait 15 seconds seing the notification 
+            //hide notification, clear the cart and redirect to home page
+            setNotification(null); 
+            clearCart();
+            router.push('/');
+        } catch (err) {
+            console.error("Failed to send order:", err);
+            setNotification({
+                message: "Error creating the order please try again",
+                type: "error"
+            });
+    
+            setTimeout(() => setNotification(null), 10000);
+        }
+    };
+    
     // find extra of the specific burger 
     const findExtra = (idExtra) => {
         const extra = extrasList.find(item => item.idExtra === idExtra);
@@ -79,6 +125,20 @@ const CartPage = () => {
             >
                 Continue Shopping
             </button>
+            {/*Button to confirm order and call api backend */}
+            <button
+                onClick={() => confirmOrder()}
+                className="mt-6 px-4 py-2 bg-gray-500 text-white rounded-full hover:bg-gray-600 block mx-auto"
+            >
+                Confirm Order
+            </button>
+
+            {notification && (
+                <div className={`fixed top-5 right-5 px-4 py-3 rounded-lg shadow-lg z-50 text-white 
+                    ${notification.type === "success" ? "bg-green-500" : "bg-red-500"}`}>
+                    {notification.message}
+                </div>
+            )}
         </div>
     );
 };
