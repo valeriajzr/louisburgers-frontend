@@ -10,9 +10,11 @@ export default function Home(){
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const router = useRouter();
-  const { selectedBurger, selectBurger, removeFromCart, clearCart } = useBurger(); //Hook to use the context
+  const { selectBurger, currentBurger } = useBurger(); //Hook to use the context
   const handleOrderClick = (burger) => {
+    currentBurger(burger);
     selectBurger(burger);
+
     router.push('/CreateOrder');
   };
 

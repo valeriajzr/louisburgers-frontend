@@ -1,12 +1,11 @@
 'use client';
 import {useEffect, useState} from "react";
 import { useRouter } from "next/navigation"; 
-import { useSearchParams } from "next/navigation";
 import { useBurger } from '../context/BurgerContext';
 import CartButton from "../components/CartButton";
 
 const CreateOrder = () => {
-    const { selectedBurger, selectBurger, removeFromCart, clearCart, addExtraToBurger, removeExtraFromBurger } = useBurger();
+    const { selectedBurger,  addExtraToBurger, setExtrasList } = useBurger();
     const [extras, setExtras] = useState([]);
     const [loading, setLoading] = useState([true]);
     const [error, setError] = useState(null);
@@ -31,6 +30,7 @@ const CreateOrder = () => {
             console.log(data);
             setExtras(data);
             setLoading(false);
+            setExtrasList(data);
             }catch(err){
                 setError(err.message);
                 setLoading(false);

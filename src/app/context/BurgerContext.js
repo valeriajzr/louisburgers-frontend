@@ -6,29 +6,46 @@ import { createContext, useContext, useState } from "react";
 const BurgerContext = createContext();
 
 export const BurgerProvider = ({ children }) => {
-    const [selectedBurger, setSelectedBurger] = useState([]); //Intital state of the empty cart
+    const [burgersList, setBurgersList] = useState([]); //Intital state of the empty cart
+    const [selectedBurger, setSelectedBurger] = useState(null); // the selected burger to add to the cart
     
-    //add to cart
+    const [extrasList, setExtrasList] = useState([]);
+
+    //setting the current burger
+    const currentBurger = (burger) => {
+        setSelectedBurger(burger);
+        
+    };
+
+
+    //add to cart (to the list of burgers)
     const selectBurger = (burger) => {
-        setSelectedBurger(prevCart => [...prevCart, {...burger, extra:null}]);// function to add a burger and extra (set as null) to the cart
+        setBurgersList(prevCart => [...prevCart, {...burger, extra:null}]);// function to add a burger and extra (set as null) to the cart
         console.log("pasa hamburguesa"  + burger.idBurger);
     };
 
+
+
     //Adding an extra (reeplacing in case there's an extra)
-    const addExtraToBurger = (burgerId, extra) =>{
-        setSelectedBurger(prevCart => prevCart.map(item =>
-            item.idBurger == burgerId
-            ? {...item, extra } //reeplace the current extra
-            : item
-        ));
-        console.log("pasa extra"  + extra.idExtra);
+    const addExtraToBurger = (idBurger, extra) =>{
+        setBurgersList(prevCart => {
+            // find last idburger
+            const lastIndex = prevCart.map(item => item.idBurger).lastIndexOf(idBurger);
+    
+            return prevCart.map((item, index) =>
+                index === lastIndex
+                    ? { ...item, extra: extra.idExtra } // replace extra only in last burger
+                    : item
+            );
+        });
+        console.log(`Extra ${extra.idExtra} agregado a la hamburguesa ${idBurger}`);
     }; 
 
 
     //delete the extra without removing the burger from the cart
-    const removeExtraFromBurger = (burgerId) => {
-        setSelectedBurger(prevCart => prevCart.map(item =>
-            item.idBurger == burgerId
+    const removeExtraFromBurger = (idBurger) => {
+        setBurgersList(prevCart => prevCart.map(item =>
+            item.idBurger == idBurger
             ? {...item, extra: null} //deleting the extra
             : item
         ));
@@ -36,17 +53,17 @@ export const BurgerProvider = ({ children }) => {
 
 
     const removeFromCart = (idBurger) => {
-        setSelectedBurger(prevCart => prevCart.filter(item => item.idBurger !== idBurger));
+        setBurgersList(prevCart => prevCart.filter(item => item.idBurger !== idBurger));
     }; //function to delete a burger 
 
     const clearCart = () => {
-        setSelectedBurger([]);
+        setBurgersList([]);
     };
     
     
 
     return (
-        <BurgerContext.Provider value = {{ selectedBurger, selectBurger, addExtraToBurger, removeExtraFromBurger, removeFromCart, clearCart }}>
+        <BurgerContext.Provider value = {{ selectedBurger: selectedBurger, burgersList: burgersList, extrasList:extrasList, currentBurger, selectBurger, addExtraToBurger, removeExtraFromBurger, removeFromCart, clearCart, setExtrasList }}>
             {children}
         </BurgerContext.Provider>
     );
