@@ -1,3 +1,39 @@
+# LouisBurgers – Frontend (React + Next.js)
+
+This is the **frontend** of the LouisBurgers system, built using **React**, **Next.js**, and **Tailwind CSS**. It provides a user interface to interact with the backend API, allowing users to view and manage burgers and orders.
+
+The app uses the `app/` directory routing structure introduced in Next.js 13+, and is structured by feature-based routes (e.g., `/burgers`, `/orders`).
+
+---
+
+## Features
+
+- View a list of available burgers and their details
+- Create and edit burgers with dynamic ingredient selection
+- Create and view customer orders
+- Dynamic routing for entity editing (`/edit-burger/[id]`)
+- Utility-first styling with Tailwind CSS
+
+---
+
+## Styling
+
+This project uses **Tailwind CSS** for utility-first styling.  
+You can customize the design using:
+
+- `tailwind.config.js`
+- `globals.css` (where Tailwind directives are imported)
+
+---
+
+## Related Projects
+
+- Backend – ASP.NET Core API (https://github.com/valeriajzr/LouisBurgers)
+- Database Scripts (https://github.com/valeriajzr/DBScripts)
+
+---
+
+
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started
